@@ -9,7 +9,7 @@
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
-[![MCP](https://img.shields.io/badge/MCP-enabled-blueviolet?logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiPjxyZWN0IHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgcng9IjMiIGZpbGw9IiM3YzNhZWQiLz48L3N2Zz4=)](https://modelcontextprotocol.io/)
+[![MCP](https://img.shields.io/badge/MCP-enabled-blueviolet)](https://modelcontextprotocol.io/)
 [![LLM Providers](https://img.shields.io/badge/LLM_providers-7-orange)](docs/getting-started.md)
 
 ---
