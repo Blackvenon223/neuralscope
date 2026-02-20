@@ -18,6 +18,7 @@ class GenerateTestsParams:
 @dataclass(frozen=True)
 class GenerateTestsSuccess:
     suite: TestSuite
+
     def is_success(self) -> bool:
         return True
 
@@ -25,6 +26,7 @@ class GenerateTestsSuccess:
 @dataclass(frozen=True)
 class GenerateTestsError:
     message: str
+
     def is_success(self) -> bool:
         return False
 
@@ -39,7 +41,8 @@ class GenerateTestsUseCase:
         self._log_context = log_context_repository
 
     async def __call__(
-        self, params: GenerateTestsParams,
+        self,
+        params: GenerateTestsParams,
     ) -> GenerateTestsSuccess | GenerateTestsError:
         self._log_context.emit_input(path=params.path)
 

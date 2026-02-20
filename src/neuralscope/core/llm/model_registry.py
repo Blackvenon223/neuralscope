@@ -187,11 +187,13 @@ class ModelRegistry:
     def list_providers(self) -> list[dict[str, str]]:
         result = []
         for provider in LLMProvider:
-            result.append({
-                "provider": provider.value,
-                "status": "configured" if self._has_credentials(provider) else "not configured",
-                "models": PROVIDER_MODELS.get(provider, ""),
-            })
+            result.append(
+                {
+                    "provider": provider.value,
+                    "status": "configured" if self._has_credentials(provider) else "not configured",
+                    "models": PROVIDER_MODELS.get(provider, ""),
+                }
+            )
         return result
 
     def _has_credentials(self, provider: LLMProvider) -> bool:

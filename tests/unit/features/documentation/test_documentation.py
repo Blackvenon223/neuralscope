@@ -26,34 +26,36 @@ def test_generated_doc_item_count():
 
 
 def test_parse_valid_doc_response():
-    raw = json.dumps({
-        "module_docstring": "Auth module",
-        "classes": [
-            {
-                "name": "AuthService",
-                "docstring": "Handles authentication",
-                "bases": ["BaseService"],
-                "methods": [
-                    {
-                        "name": "login",
-                        "signature": "async def login(email: str, password: str) -> Token",
-                        "docstring": "Authenticates user",
-                        "params": ["email: str - user email", "password: str - user password"],
-                        "returns": "JWT token",
-                    }
-                ],
-            }
-        ],
-        "functions": [
-            {
-                "name": "hash_password",
-                "signature": "def hash_password(pw: str) -> str",
-                "docstring": "Hashes password with bcrypt",
-                "params": ["pw: str - raw password"],
-                "returns": "hashed string",
-            }
-        ],
-    })
+    raw = json.dumps(
+        {
+            "module_docstring": "Auth module",
+            "classes": [
+                {
+                    "name": "AuthService",
+                    "docstring": "Handles authentication",
+                    "bases": ["BaseService"],
+                    "methods": [
+                        {
+                            "name": "login",
+                            "signature": "async def login(email: str, password: str) -> Token",
+                            "docstring": "Authenticates user",
+                            "params": ["email: str - user email", "password: str - user password"],
+                            "returns": "JWT token",
+                        }
+                    ],
+                }
+            ],
+            "functions": [
+                {
+                    "name": "hash_password",
+                    "signature": "def hash_password(pw: str) -> str",
+                    "docstring": "Hashes password with bcrypt",
+                    "params": ["pw: str - raw password"],
+                    "returns": "hashed string",
+                }
+            ],
+        }
+    )
 
     ds = LlmDocumenterDatasource.__new__(LlmDocumenterDatasource)
     doc = ds._parse("auth.py", raw)

@@ -21,6 +21,7 @@ class ValidateProjectParams:
 @dataclass(frozen=True)
 class ValidateProjectSuccess:
     report: ValidationReport
+
     def is_success(self) -> bool:
         return True
 
@@ -28,6 +29,7 @@ class ValidateProjectSuccess:
 @dataclass(frozen=True)
 class ValidateProjectError:
     message: str
+
     def is_success(self) -> bool:
         return False
 
@@ -42,7 +44,8 @@ class ValidateProjectUseCase:
         self._log_context = log_context_repository
 
     async def __call__(
-        self, params: ValidateProjectParams,
+        self,
+        params: ValidateProjectParams,
     ) -> ValidateProjectSuccess | ValidateProjectError:
         self._log_context.emit_input(path=params.path, rules=params.rules_path)
 

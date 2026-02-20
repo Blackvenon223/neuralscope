@@ -18,6 +18,7 @@ class AnalyzeHealthParams:
 @dataclass(frozen=True)
 class AnalyzeHealthSuccess:
     report: HealthReport
+
     def is_success(self) -> bool:
         return True
 
@@ -25,6 +26,7 @@ class AnalyzeHealthSuccess:
 @dataclass(frozen=True)
 class AnalyzeHealthError:
     message: str
+
     def is_success(self) -> bool:
         return False
 
@@ -39,7 +41,8 @@ class AnalyzeHealthUseCase:
         self._log_context = log_context_repository
 
     async def __call__(
-        self, params: AnalyzeHealthParams,
+        self,
+        params: AnalyzeHealthParams,
     ) -> AnalyzeHealthSuccess | AnalyzeHealthError:
         self._log_context.emit_input(path=params.path)
 

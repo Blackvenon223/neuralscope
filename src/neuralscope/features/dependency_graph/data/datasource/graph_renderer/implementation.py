@@ -50,7 +50,7 @@ class GraphRenderer:
 
     def _to_dot(self, _nxg: nx.DiGraph, graph: DependencyGraph) -> str:
         lines = ["digraph DependencyGraph {"]
-        lines.append('  rankdir=LR;')
+        lines.append("  rankdir=LR;")
         lines.append('  node [shape=box, style="rounded,filled", fontname="Inter"];')
         lines.append("")
 

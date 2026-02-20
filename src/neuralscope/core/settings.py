@@ -47,9 +47,7 @@ class Settings(BaseSettings):
 
     # LLM proxy services
     openrouter_api_key: str | None = Field(default=None, alias="OPENROUTER_API_KEY")
-    litellm_api_base: str = Field(
-        default="http://localhost:4000", alias="LITELLM_API_BASE"
-    )
+    litellm_api_base: str = Field(default="http://localhost:4000", alias="LITELLM_API_BASE")
     litellm_api_key: str | None = Field(default=None, alias="LITELLM_API_KEY")
 
     # Qdrant

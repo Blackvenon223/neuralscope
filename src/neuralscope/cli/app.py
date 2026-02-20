@@ -39,7 +39,9 @@ def version_callback(value: bool) -> None:
 @app.callback()
 def main(
     version: bool = typer.Option(
-        False, "--version", "-V",
+        False,
+        "--version",
+        "-V",
         help="Show version and exit.",
         callback=version_callback,
         is_eager=True,
@@ -172,11 +174,16 @@ def profile_create(
     temperature: float = typer.Option(0.7, "--temp", help="Temperature"),
 ) -> None:
     """Create a new prompt profile."""
-    _run(_client().create_profile(name, config={
-        "description": description,
-        "system_prompt": system_prompt,
-        "temperature": temperature,
-    }))
+    _run(
+        _client().create_profile(
+            name,
+            config={
+                "description": description,
+                "system_prompt": system_prompt,
+                "temperature": temperature,
+            },
+        )
+    )
     console.print(Panel(f"[green]Profile '{name}' created[/green]"))
 
 

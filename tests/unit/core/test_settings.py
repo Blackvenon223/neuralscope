@@ -13,7 +13,8 @@ def test_defaults():
 
 def test_model_string():
     settings = Settings(
-        _env_file=None, llm_provider="anthropic",
+        _env_file=None,
+        llm_provider="anthropic",
         llm_model="claude-sonnet-4-6-20260217",
     )
     assert settings.get_model_string() == "anthropic/claude-sonnet-4-6-20260217"

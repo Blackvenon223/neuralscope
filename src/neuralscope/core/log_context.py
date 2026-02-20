@@ -45,9 +45,7 @@ class LogContextRepository(ILogContextRepository):
 
     def emit_result(self, *, result: str, **kwargs: Any) -> None:
         """Log result with elapsed time."""
-        elapsed = (
-            f"{time.monotonic() - self._start_time:.3f}s" if self._start_time else "n/a"
-        )
+        elapsed = f"{time.monotonic() - self._start_time:.3f}s" if self._start_time else "n/a"
         context = " ".join(f"{k}={v}" for k, v in kwargs.items())
         logger.info(
             "USE_CASE_RESULT | %s | result=%s | elapsed=%s | %s",

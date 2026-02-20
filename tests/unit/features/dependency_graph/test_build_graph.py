@@ -73,19 +73,25 @@ def test_llm_graph_analyzer_parse():
         LlmGraphAnalyzer,
     )
 
-    raw = json.dumps({
-        "nodes": [
-            {"id": "app", "name": "app", "kind": "module",
-             "file_path": "app.py", "line": 1},
-            {"id": "app.Server", "name": "Server", "kind": "class",
-             "file_path": "app.py", "line": 5},
-            {"id": "db", "name": "db", "kind": "module", "file_path": "db.py", "line": 1},
-        ],
-        "edges": [
-            {"source": "app", "target": "db", "relation": "imports"},
-            {"source": "app.Server", "target": "db", "relation": "uses"},
-        ],
-    })
+    raw = json.dumps(
+        {
+            "nodes": [
+                {"id": "app", "name": "app", "kind": "module", "file_path": "app.py", "line": 1},
+                {
+                    "id": "app.Server",
+                    "name": "Server",
+                    "kind": "class",
+                    "file_path": "app.py",
+                    "line": 5,
+                },
+                {"id": "db", "name": "db", "kind": "module", "file_path": "db.py", "line": 1},
+            ],
+            "edges": [
+                {"source": "app", "target": "db", "relation": "imports"},
+                {"source": "app.Server", "target": "db", "relation": "uses"},
+            ],
+        }
+    )
 
     analyzer = LlmGraphAnalyzer.__new__(LlmGraphAnalyzer)
     graph = analyzer._parse("/project", raw)
@@ -114,4 +120,3 @@ async def test_build_graph_mode_defaults_to_ast(project_dir: Path):
     result = await uc(BuildGraphParams(path=str(project_dir), mode="ast"))
     assert result.is_success()
     assert result.graph.node_count >= 2
-

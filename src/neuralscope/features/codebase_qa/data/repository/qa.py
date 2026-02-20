@@ -44,9 +44,6 @@ class QARepository(IQARepository):
         if not top:
             top = [(0, c) for c in chunks[:5]]
 
-        context = [
-            f"# {c.file_path}:{c.line_start}-{c.line_end}\n{c.content}"
-            for _, c in top
-        ]
+        context = [f"# {c.file_path}:{c.line_start}-{c.line_end}\n{c.content}" for _, c in top]
 
         return await self._answerer.answer(question, context)

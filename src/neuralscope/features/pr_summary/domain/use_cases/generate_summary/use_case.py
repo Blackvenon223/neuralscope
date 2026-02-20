@@ -19,6 +19,7 @@ class GenerateSummaryParams:
 @dataclass(frozen=True)
 class GenerateSummarySuccess:
     summary: PRSummary
+
     def is_success(self) -> bool:
         return True
 
@@ -26,6 +27,7 @@ class GenerateSummarySuccess:
 @dataclass(frozen=True)
 class GenerateSummaryError:
     message: str
+
     def is_success(self) -> bool:
         return False
 
@@ -40,7 +42,8 @@ class GenerateSummaryUseCase:
         self._log_context = log_context_repository
 
     async def __call__(
-        self, params: GenerateSummaryParams,
+        self,
+        params: GenerateSummaryParams,
     ) -> GenerateSummarySuccess | GenerateSummaryError:
         self._log_context.emit_input(diff_ref=params.diff_ref)
 

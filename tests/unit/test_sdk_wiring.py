@@ -3,6 +3,7 @@
 
 def test_sdk_import():
     from neuralscope.sdk.client import NeuralScope
+
     ns = NeuralScope()
     assert ns.model
     assert ns.profile == "default"
@@ -10,6 +11,7 @@ def test_sdk_import():
 
 def test_sdk_list_models():
     from neuralscope.sdk.client import NeuralScope
+
     ns = NeuralScope()
     providers = ns.list_models()
     assert isinstance(providers, list)
@@ -22,4 +24,5 @@ def test_all_feature_imports():
 
 def test_cli_import():
     from neuralscope.cli.app import app
+
     assert app is not None

@@ -13,8 +13,10 @@ def test_validation_report_passed():
         rules_checked=5,
         violations=[
             Violation(
-                rule="naming", file_path="a.py",
-                message="bad name", severity=ViolationSeverity.WARNING,
+                rule="naming",
+                file_path="a.py",
+                message="bad name",
+                severity=ViolationSeverity.WARNING,
             ),
         ],
     )
@@ -27,8 +29,10 @@ def test_validation_report_failed():
         project_path="/p",
         violations=[
             Violation(
-                rule="imports", file_path="b.py",
-                message="circular", severity=ViolationSeverity.ERROR,
+                rule="imports",
+                file_path="b.py",
+                message="circular",
+                severity=ViolationSeverity.ERROR,
             ),
         ],
     )

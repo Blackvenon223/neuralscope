@@ -18,9 +18,17 @@ def test_mcp_server_has_correct_tool_count():
 def test_mcp_tools_have_names():
     names = {t.name for t in TOOLS}
     expected = {
-        "review", "docs", "build_graph", "impact", "scan",
-        "generate_tests", "ask", "health", "pr_summary",
-        "validate_arch", "list_models",
+        "review",
+        "docs",
+        "build_graph",
+        "impact",
+        "scan",
+        "generate_tests",
+        "ask",
+        "health",
+        "pr_summary",
+        "validate_arch",
+        "list_models",
     }
     assert names == expected
 

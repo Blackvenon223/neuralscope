@@ -74,14 +74,15 @@ class LlmGraphAnalyzer:
 
     async def analyze(self, root_path: str, files: dict[str, str]) -> DependencyGraph:
         file_listing = "\n\n".join(
-            f"### {path}\n```python\n{source[:2000]}\n```"
-            for path, source in files.items()
+            f"### {path}\n```python\n{source[:2000]}\n```" for path, source in files.items()
         )
 
-        response = await self._llm.ainvoke([
-            SystemMessage(content=SYSTEM_PROMPT),
-            HumanMessage(content=f"Project files:\n\n{file_listing}"),
-        ])
+        response = await self._llm.ainvoke(
+            [
+                SystemMessage(content=SYSTEM_PROMPT),
+                HumanMessage(content=f"Project files:\n\n{file_listing}"),
+            ]
+        )
         return self._parse(root_path, str(response.content))
 
     def _parse(self, root_path: str, raw: str) -> DependencyGraph:

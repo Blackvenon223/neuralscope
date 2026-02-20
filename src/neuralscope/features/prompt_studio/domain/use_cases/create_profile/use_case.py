@@ -20,6 +20,7 @@ class CreateProfileParams:
 @dataclass(frozen=True)
 class CreateProfileSuccess:
     profile: PromptProfile
+
     def is_success(self) -> bool:
         return True
 
@@ -27,6 +28,7 @@ class CreateProfileSuccess:
 @dataclass(frozen=True)
 class CreateProfileError:
     message: str
+
     def is_success(self) -> bool:
         return False
 
@@ -41,7 +43,8 @@ class CreateProfileUseCase:
         self._log_context = log_context_repository
 
     async def __call__(
-        self, params: CreateProfileParams,
+        self,
+        params: CreateProfileParams,
     ) -> CreateProfileSuccess | CreateProfileError:
         self._log_context.emit_input(name=params.name)
 

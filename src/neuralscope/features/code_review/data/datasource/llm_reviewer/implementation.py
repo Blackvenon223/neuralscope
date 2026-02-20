@@ -77,10 +77,12 @@ class LlmReviewerDatasource:
         return self._parse("(diff)", raw)
 
     async def _invoke(self, system: str, user: str) -> str:
-        response = await self._llm.ainvoke([
-            SystemMessage(content=system),
-            HumanMessage(content=user),
-        ])
+        response = await self._llm.ainvoke(
+            [
+                SystemMessage(content=system),
+                HumanMessage(content=user),
+            ]
+        )
         return str(response.content)
 
     def _parse(self, file_path: str, raw: str) -> ReviewResult:

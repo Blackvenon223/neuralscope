@@ -49,7 +49,7 @@ class Tracer:
         span = TraceSpan(operation=operation, model=model, metadata=metadata)
         self._spans.append(span)
         if len(self._spans) > self._max:
-            self._spans = self._spans[-self._max:]
+            self._spans = self._spans[-self._max :]
         return span
 
     @property

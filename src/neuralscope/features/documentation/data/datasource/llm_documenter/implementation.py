@@ -61,10 +61,12 @@ class LlmDocumenterDatasource:
 
     async def generate(self, file_path: str, source: str) -> GeneratedDoc:
         prompt = f"File: {file_path}\n\n```python\n{source}\n```"
-        response = await self._llm.ainvoke([
-            SystemMessage(content=SYSTEM_PROMPT),
-            HumanMessage(content=prompt),
-        ])
+        response = await self._llm.ainvoke(
+            [
+                SystemMessage(content=SYSTEM_PROMPT),
+                HumanMessage(content=prompt),
+            ]
+        )
         return self._parse(file_path, str(response.content))
 
     def _parse(self, file_path: str, raw: str) -> GeneratedDoc:

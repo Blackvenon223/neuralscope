@@ -20,12 +20,16 @@ def test_review_result_properties():
         summary="Clean code",
         issues=[
             Issue(
-                line=10, message="unused import",
-                severity=Severity.WARNING, category=IssueCategory.STYLE,
+                line=10,
+                message="unused import",
+                severity=Severity.WARNING,
+                category=IssueCategory.STYLE,
             ),
             Issue(
-                line=25, message="SQL injection",
-                severity=Severity.CRITICAL, category=IssueCategory.SECURITY,
+                line=25,
+                message="SQL injection",
+                severity=Severity.CRITICAL,
+                category=IssueCategory.SECURITY,
             ),
         ],
         strengths=["Good naming"],
@@ -42,20 +46,22 @@ def test_review_result_passed():
 
 
 def test_parse_valid_json():
-    raw = json.dumps({
-        "score": 7.5,
-        "summary": "Decent code",
-        "issues": [
-            {
-                "line": 5,
-                "message": "Missing docstring",
-                "severity": "info",
-                "category": "documentation",
-                "suggestion": "Add a docstring",
-            }
-        ],
-        "strengths": ["Clear logic"],
-    })
+    raw = json.dumps(
+        {
+            "score": 7.5,
+            "summary": "Decent code",
+            "issues": [
+                {
+                    "line": 5,
+                    "message": "Missing docstring",
+                    "severity": "info",
+                    "category": "documentation",
+                    "suggestion": "Add a docstring",
+                }
+            ],
+            "strengths": ["Clear logic"],
+        }
+    )
 
     ds = LlmReviewerDatasource.__new__(LlmReviewerDatasource)
     result = ds._parse("test.py", raw)

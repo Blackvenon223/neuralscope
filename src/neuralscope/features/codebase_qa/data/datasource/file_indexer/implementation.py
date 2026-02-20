@@ -69,20 +69,24 @@ class FileIndexer:
                 start = node.lineno
                 end = node.end_lineno or start
                 body = "\n".join(lines[start - 1 : end])
-                chunks.append(CodeChunk(
-                    file_path=file_path,
-                    content=body,
-                    line_start=start,
-                    line_end=end,
-                ))
+                chunks.append(
+                    CodeChunk(
+                        file_path=file_path,
+                        content=body,
+                        line_start=start,
+                        line_end=end,
+                    )
+                )
 
         if not chunks and lines:
-            chunks.append(CodeChunk(
-                file_path=file_path,
-                content=source[:3000],
-                line_start=1,
-                line_end=len(lines),
-            ))
+            chunks.append(
+                CodeChunk(
+                    file_path=file_path,
+                    content=source[:3000],
+                    line_start=1,
+                    line_end=len(lines),
+                )
+            )
 
         return chunks
 
@@ -91,12 +95,14 @@ class FileIndexer:
         chunks: list[CodeChunk] = []
         for i in range(0, len(lines), self._max_lines):
             batch = lines[i : i + self._max_lines]
-            chunks.append(CodeChunk(
-                file_path=file_path,
-                content="\n".join(batch),
-                line_start=i + 1,
-                line_end=i + len(batch),
-            ))
+            chunks.append(
+                CodeChunk(
+                    file_path=file_path,
+                    content="\n".join(batch),
+                    line_start=i + 1,
+                    line_end=i + len(batch),
+                )
+            )
         return chunks
 
     @staticmethod

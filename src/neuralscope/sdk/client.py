@@ -71,18 +71,21 @@ class NeuralScope:
         if result.is_success():
             r = result.review
             return {
-                "file": r.file_path, "score": r.score,
+                "file": r.file_path,
+                "score": r.score,
                 "summary": r.summary,
                 "issues": [
                     {
-                        "line": i.line, "message": i.message,
+                        "line": i.line,
+                        "message": i.message,
                         "severity": i.severity.value,
                         "category": i.category.value,
                         "suggestion": i.suggestion,
                     }
                     for i in r.issues
                 ],
-                "strengths": r.strengths, "passed": r.passed,
+                "strengths": r.strengths,
+                "passed": r.passed,
             }
         return {"error": result.message}
 
@@ -109,7 +112,8 @@ class NeuralScope:
             return {
                 "file": d.file_path,
                 "module_docstring": d.module_docstring,
-                "items": d.item_count, "rendered": d.rendered,
+                "items": d.item_count,
+                "rendered": d.rendered,
             }
         return {"error": result.message}
 
@@ -132,7 +136,8 @@ class NeuralScope:
             return {
                 "nodes": result.graph.node_count,
                 "edges": result.graph.edge_count,
-                "rendered": result.rendered, "mode": mode,
+                "rendered": result.rendered,
+                "mode": mode,
             }
         return {"error": result.message}
 
@@ -189,12 +194,15 @@ class NeuralScope:
                 "total": r.total,
                 "critical": r.critical_count,
                 "high": r.high_count,
-                "passed": r.passed, "summary": r.summary,
+                "passed": r.passed,
+                "summary": r.summary,
                 "vulnerabilities": [
                     {
-                        "id": v.id, "title": v.title,
+                        "id": v.id,
+                        "title": v.title,
                         "severity": v.severity.value,
-                        "file": v.file_path, "line": v.line,
+                        "file": v.file_path,
+                        "line": v.line,
                         "description": v.description,
                         "recommendation": v.recommendation,
                     }
@@ -249,7 +257,8 @@ class NeuralScope:
         if result.is_success():
             a = result.answer
             return {
-                "answer": a.answer, "confidence": a.confidence,
+                "answer": a.answer,
+                "confidence": a.confidence,
                 "sources": [
                     {
                         "file": s.file_path,
@@ -276,8 +285,10 @@ class NeuralScope:
         if result.is_success():
             r = result.report
             return {
-                "files": r.total_files, "lines": r.total_lines,
-                "avg_complexity": r.avg_complexity, "health_score": r.health_score,
+                "files": r.total_files,
+                "lines": r.total_lines,
+                "avg_complexity": r.avg_complexity,
+                "health_score": r.health_score,
                 "hotspots": [
                     {"file": h.file_path, "complexity": h.complexity, "rank": h.rank}
                     for h in r.hotspots
@@ -322,7 +333,8 @@ class NeuralScope:
             r = result.report
             hotspot_violations = [
                 {"file": h.file_path, "complexity": h.complexity}
-                for h in r.hotspots if h.complexity > 10
+                for h in r.hotspots
+                if h.complexity > 10
             ]
             return {
                 "passed": len(hotspot_violations) == 0,
@@ -334,7 +346,10 @@ class NeuralScope:
     # ── Prompt Management ──────────────────────────────────────────────────
 
     async def create_profile(
-        self, name: str, *, config: dict | None = None,
+        self,
+        name: str,
+        *,
+        config: dict | None = None,
     ) -> dict:
         from neuralscope.features.prompt_studio.data.datasource.prompt_storage.implementation import (  # noqa: E501
             FileProfileRepository,
@@ -348,12 +363,14 @@ class NeuralScope:
         repo = FileProfileRepository(profiles_dir)
         uc = CreateProfileUseCase(profile_repo=repo, log_context_repository=self._log("profile"))
         cfg = config or {}
-        result = await uc(CreateProfileParams(
-            name=name,
-            description=cfg.get("description", ""),
-            system_prompt=cfg.get("system_prompt", ""),
-            temperature=cfg.get("temperature", 0.7),
-        ))
+        result = await uc(
+            CreateProfileParams(
+                name=name,
+                description=cfg.get("description", ""),
+                system_prompt=cfg.get("system_prompt", ""),
+                temperature=cfg.get("temperature", 0.7),
+            )
+        )
         if result.is_success():
             return result.profile.to_dict()
         return {"error": result.message}

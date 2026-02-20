@@ -14,9 +14,7 @@ from neuralscope.features.dependency_graph.domain.repository.impact_analyzer imp
 
 
 class ImpactAnalyzerRepository(IImpactAnalyzerRepository):
-    async def analyze(
-        self, graph: DependencyGraph, changed_files: list[str]
-    ) -> ImpactReport:
+    async def analyze(self, graph: DependencyGraph, changed_files: list[str]) -> ImpactReport:
         changed_modules = self._files_to_module_ids(graph, changed_files)
         affected = self._find_affected(graph, changed_modules)
         risk = self._assess_risk(affected)
@@ -26,9 +24,7 @@ class ImpactAnalyzerRepository(IImpactAnalyzerRepository):
             risk_level=risk,
         )
 
-    def _files_to_module_ids(
-        self, graph: DependencyGraph, files: list[str]
-    ) -> set[str]:
+    def _files_to_module_ids(self, graph: DependencyGraph, files: list[str]) -> set[str]:
         lookup = {n.file_path: n.id for n in graph.nodes}
         result = set()
         for f in files:

@@ -10,7 +10,5 @@ from neuralscope.features.dependency_graph.domain.entities.impact import ImpactR
 
 class IImpactAnalyzerRepository(ABC):
     @abstractmethod
-    async def analyze(
-        self, graph: DependencyGraph, changed_files: list[str]
-    ) -> ImpactReport:
+    async def analyze(self, graph: DependencyGraph, changed_files: list[str]) -> ImpactReport:
         raise NotImplementedError

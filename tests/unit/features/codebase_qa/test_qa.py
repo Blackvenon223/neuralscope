@@ -60,13 +60,20 @@ def test_file_indexer_to_source_ref(tmp_path: Path):
 
 
 def test_answerer_parse_valid():
-    raw = json.dumps({
-        "answer": "Auth uses JWT tokens",
-        "confidence": 0.85,
-        "sources": [
-            {"file_path": "auth.py", "line_start": 10, "line_end": 25, "snippet": "def login():"}
-        ],
-    })
+    raw = json.dumps(
+        {
+            "answer": "Auth uses JWT tokens",
+            "confidence": 0.85,
+            "sources": [
+                {
+                    "file_path": "auth.py",
+                    "line_start": 10,
+                    "line_end": 25,
+                    "snippet": "def login():",
+                }
+            ],
+        }
+    )
 
     answerer = LlmAnswerer.__new__(LlmAnswerer)
     result = answerer._parse("How does auth work?", raw)

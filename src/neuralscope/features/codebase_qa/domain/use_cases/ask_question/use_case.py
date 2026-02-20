@@ -18,6 +18,7 @@ class AskQuestionParams:
 @dataclass(frozen=True)
 class AskQuestionSuccess:
     answer: Answer
+
     def is_success(self) -> bool:
         return True
 
@@ -25,6 +26,7 @@ class AskQuestionSuccess:
 @dataclass(frozen=True)
 class AskQuestionError:
     message: str
+
     def is_success(self) -> bool:
         return False
 

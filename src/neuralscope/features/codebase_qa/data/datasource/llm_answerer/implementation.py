@@ -43,10 +43,12 @@ class LlmAnswerer:
         context = "\n\n---\n\n".join(context_chunks)
         prompt = f"Question: {question}\n\nCode Context:\n{context}"
 
-        response = await self._llm.ainvoke([
-            SystemMessage(content=SYSTEM_PROMPT),
-            HumanMessage(content=prompt),
-        ])
+        response = await self._llm.ainvoke(
+            [
+                SystemMessage(content=SYSTEM_PROMPT),
+                HumanMessage(content=prompt),
+            ]
+        )
         return self._parse(question, str(response.content))
 
     def _parse(self, question: str, raw: str) -> Answer:

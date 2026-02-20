@@ -31,7 +31,9 @@ def test_health_score_bad():
         test_coverage=30.0,
         hotspots=[
             ComplexityMetric(
-                file_path=f"f{i}.py", function_name="x", complexity=20,
+                file_path=f"f{i}.py",
+                function_name="x",
+                complexity=20,
             )
             for i in range(6)
         ],

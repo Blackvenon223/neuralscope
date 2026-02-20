@@ -41,9 +41,7 @@ class AstParser:
 
         return nodes, edges
 
-    def _parse_file(
-        self, file_path: Path
-    ) -> tuple[list[GraphNode], list[GraphEdge]]:
+    def _parse_file(self, file_path: Path) -> tuple[list[GraphNode], list[GraphEdge]]:
         try:
             source = file_path.read_text(encoding="utf-8")
             tree = ast.parse(source, filename=str(file_path))
@@ -96,9 +94,7 @@ class AstParser:
 
             elif isinstance(node, ast.Import):
                 for alias in node.names:
-                    edges.append(
-                        GraphEdge(source=module_id, target=alias.name, relation="imports")
-                    )
+                    edges.append(GraphEdge(source=module_id, target=alias.name, relation="imports"))
 
             elif isinstance(node, ast.ImportFrom):
                 if node.module:
