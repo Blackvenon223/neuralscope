@@ -1,0 +1,106 @@
+[tool.poetry]
+name = "neuralscope"
+version = "0.1.0"
+description = "🧠🔬 AI-powered code analysis toolkit: review, docs, graphs, security, Q&A"
+authors = ["Blackvenon223"]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "neuralscope", from = "src" }]
+keywords = ["ai", "code-review", "documentation", "dependency-graph", "mcp", "langchain"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Software Development :: Documentation",
+    "Programming Language :: Python :: 3.12",
+]
+
+[tool.poetry.scripts]
+neuralscope = "neuralscope.cli.app:app"
+neuralscope-mcp = "neuralscope.mcp.server:main"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+# AI / LLM (core only — provider packages installed as extras)
+langchain-core = ">=0.3,<1"
+langchain = ">=0.3,<1"
+langchain-community = ">=0.3,<1"
+
+# MCP
+mcp = ">=1,<2"
+
+# Vector DB (RAG)
+qdrant-client = ">=1.12"
+
+# AST & Graph
+networkx = ">=3.0"
+
+# Security scanners
+bandit = {version = ">=1.7", optional = true}
+
+# Code metrics
+radon = ">=6"
+
+# CLI
+typer = ">=0.12"
+rich = ">=13"
+
+# Config
+pydantic = ">=2"
+pydantic-settings = ">=2"
+
+# Cache
+diskcache = ">=5"
+
+# Utils
+pyyaml = ">=6"
+
+[tool.poetry.extras]
+openai = ["langchain-openai"]
+anthropic = ["langchain-anthropic"]
+google = ["langchain-google-genai"]
+security = ["bandit"]
+all = ["langchain-openai", "langchain-anthropic", "langchain-google-genai", "bandit"]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8"
+pytest-asyncio = "^0.25"
+pytest-cov = "^6"
+ruff = "^0.9"
+mypy = "^1"
+pre-commit = "^4"
+
+[tool.poetry.group.docs.dependencies]
+mkdocs-material = "^9"
+mkdocstrings = {version = "^0.27", extras = ["python"]}
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "S", "B", "A", "C4", "RUF"]
+ignore = ["S101"]  # assert allowed in tests
+
+[tool.ruff.lint.isort]
+known-first-party = ["neuralscope"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "-v --tb=short"
+
+[tool.coverage.run]
+source = ["src/neuralscope"]
+omit = ["tests/*"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
