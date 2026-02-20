@@ -70,6 +70,7 @@ pytest-cov = "^6"
 ruff = "^0.9"
 mypy = "^1"
 pre-commit = "^4"
+wemake-python-styleguide = "^1.5.0"
 
 [tool.poetry.group.docs.dependencies]
 mkdocs-material = "^9"

@@ -6,9 +6,11 @@
 
 *Review · Document · Graph · Scan · Test · Q&A · Health · Validate*
 
+[![Lint](https://github.com/Blackvenon223/neuralscope/actions/workflows/lint.yml/badge.svg)](https://github.com/Blackvenon223/neuralscope/actions/workflows/lint.yml)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
+[![wemake-python-styleguide](https://img.shields.io/badge/style-wemake-000000.svg)](https://github.com/wemake-services/wemake-python-styleguide)
 [![MCP](https://img.shields.io/badge/MCP-enabled-blueviolet)](https://modelcontextprotocol.io/)
 [![LLM Providers](https://img.shields.io/badge/LLM_providers-7-orange)](docs/getting-started.md)
 

@@ -1,7 +1,6 @@
 """NeuralScope CLI — powered by Typer + Rich."""
 
 import asyncio
-from pathlib import Path
 from typing import Optional
 
 import typer
@@ -174,7 +173,7 @@ def profile_create(
     temperature: float = typer.Option(0.7, "--temp", help="Temperature"),
 ) -> None:
     """Create a new prompt profile."""
-    result = _run(_client().create_profile(name, config={
+    _run(_client().create_profile(name, config={
         "description": description,
         "system_prompt": system_prompt,
         "temperature": temperature,

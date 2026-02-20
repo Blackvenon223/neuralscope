@@ -6,7 +6,6 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from neuralscope.core.log_context import ILogContextRepository
-from neuralscope.features.documentation.domain.entities.document import DocFormat
 from neuralscope.features.documentation.domain.repository.documenter import (
     IDocumenterRepository,
 )
