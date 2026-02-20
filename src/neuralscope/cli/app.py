@@ -1,7 +1,6 @@
 """NeuralScope CLI — powered by Typer + Rich."""
 
 import asyncio
-from typing import Optional
 
 import typer
 from rich.console import Console
@@ -53,7 +52,7 @@ def main(
 def review(
     path: str = typer.Argument(..., help="File to review"),
     diff: bool = typer.Option(False, "--diff", "-d", help="Review as diff"),
-    model: Optional[str] = MODEL_OPTION,
+    model: str | None = MODEL_OPTION,
     profile: str = PROFILE_OPTION,
 ) -> None:
     """AI-powered code review."""
@@ -65,12 +64,12 @@ def review(
 @app.command()
 def docs(
     path: str = typer.Argument(..., help="File to document"),
-    format: str = typer.Option("markdown", "--format", "-f", help="Output format"),
-    model: Optional[str] = MODEL_OPTION,
+    fmt: str = typer.Option("markdown", "--format", "-f", help="Output format"),
+    model: str | None = MODEL_OPTION,
 ) -> None:
     """Generate documentation for a file."""
     console.print(f"[bold]Documenting[/bold] {path}...")
-    result = _run(_client(model).docs(path, format=format))
+    result = _run(_client(model).docs(path, fmt=fmt))
     console.print_json(data=result)
 
 
@@ -79,7 +78,7 @@ def graph(
     path: str = typer.Argument(..., help="Project root path"),
     output: str = typer.Option("json", "--output", "-o", help="Output format (json/dot/svg)"),
     mode: str = typer.Option("ast", "--mode", help="Analysis mode: ast or llm"),
-    model: Optional[str] = MODEL_OPTION,
+    model: str | None = MODEL_OPTION,
 ) -> None:
     """Build dependency graph (AST or LLM-powered)."""
     console.print(f"[bold]Building graph[/bold] for {path} (mode={mode})...")
@@ -101,7 +100,7 @@ def impact(
 @app.command()
 def scan(
     path: str = typer.Argument(..., help="Project path to scan"),
-    model: Optional[str] = MODEL_OPTION,
+    model: str | None = MODEL_OPTION,
 ) -> None:
     """Scan for security vulnerabilities."""
     console.print(f"[bold]Scanning[/bold] {path}...")
@@ -112,7 +111,7 @@ def scan(
 @app.command(name="test-gen")
 def test_gen(
     path: str = typer.Argument(..., help="Source file to generate tests for"),
-    model: Optional[str] = MODEL_OPTION,
+    model: str | None = MODEL_OPTION,
 ) -> None:
     """Generate unit tests for a file."""
     console.print(f"[bold]Generating tests[/bold] for {path}...")
@@ -124,7 +123,7 @@ def test_gen(
 def ask(
     question: str = typer.Argument(..., help="Question about the codebase"),
     project: str = typer.Option(".", "--project", help="Project root"),
-    model: Optional[str] = MODEL_OPTION,
+    model: str | None = MODEL_OPTION,
 ) -> None:
     """Ask a question about the codebase (RAG-powered)."""
     console.print(f"[bold]Asking:[/bold] {question}")
@@ -145,7 +144,7 @@ def health(
 @app.command(name="pr-summary")
 def pr_summary(
     diff: str = typer.Option("HEAD~1", "--diff", help="Git diff reference"),
-    model: Optional[str] = MODEL_OPTION,
+    model: str | None = MODEL_OPTION,
 ) -> None:
     """Generate PR description from diff."""
     console.print("[bold]Generating PR summary[/bold]...")
@@ -156,8 +155,8 @@ def pr_summary(
 @app.command(name="validate")
 def validate(
     path: str = typer.Argument(..., help="Project root path"),
-    rules: Optional[str] = typer.Option(None, "--rules", "-r", help="Rules file path"),
-    model: Optional[str] = MODEL_OPTION,
+    rules: str | None = typer.Option(None, "--rules", "-r", help="Rules file path"),
+    model: str | None = MODEL_OPTION,
 ) -> None:
     """Validate architecture rules."""
     console.print(f"[bold]Validating architecture[/bold] of {path}...")

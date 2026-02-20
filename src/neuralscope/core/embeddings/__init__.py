@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Optional
-
 from langchain_core.embeddings import Embeddings
 
 from neuralscope.core.logging import get_logger
@@ -20,11 +18,11 @@ class EmbeddingsService:
     Anthropic falls back to OpenAI (no native embeddings API).
     """
 
-    def __init__(self, settings: Optional[Settings] = None) -> None:
+    def __init__(self, settings: Settings | None = None) -> None:
         self._settings = settings or get_settings()
-        self._cache: Optional[Embeddings] = None
+        self._cache: Embeddings | None = None
 
-    def get(self, provider: Optional[str] = None) -> Embeddings:
+    def get(self, provider: str | None = None) -> Embeddings:
         if self._cache is not None and provider is None:
             return self._cache
 
@@ -81,8 +79,8 @@ class EmbeddingsService:
 
     @staticmethod
     def _openai_embeddings(
-        api_key: Optional[str] = None,
-        base_url: Optional[str] = None,
+        api_key: str | None = None,
+        base_url: str | None = None,
     ) -> Embeddings:
         from langchain_openai import OpenAIEmbeddings
 

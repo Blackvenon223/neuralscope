@@ -38,7 +38,9 @@ class AnalyzeHealthUseCase:
         self._health = health_repo
         self._log_context = log_context_repository
 
-    async def __call__(self, params: AnalyzeHealthParams) -> AnalyzeHealthSuccess | AnalyzeHealthError:
+    async def __call__(
+        self, params: AnalyzeHealthParams,
+    ) -> AnalyzeHealthSuccess | AnalyzeHealthError:
         self._log_context.emit_input(path=params.path)
 
         root = Path(params.path).resolve()

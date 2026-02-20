@@ -6,8 +6,6 @@ LLM proxies:     OpenRouter (100+ models, one key), LiteLLM (self-hosted proxy).
 
 from __future__ import annotations
 
-from typing import Optional
-
 from langchain_core.language_models import BaseChatModel
 
 from neuralscope.core.llm.models import ModelConfig
@@ -56,16 +54,16 @@ class ModelRegistry:
         llm = registry.get("litellm/gpt-5.2")
     """
 
-    def __init__(self, settings: Optional[Settings] = None) -> None:
+    def __init__(self, settings: Settings | None = None) -> None:
         self._settings = settings or get_settings()
         self._cache: dict[str, BaseChatModel] = {}
 
     def get(
         self,
-        model_string: Optional[str] = None,
+        model_string: str | None = None,
         *,
         temperature: float = 0.1,
-        max_tokens: Optional[int] = None,
+        max_tokens: int | None = None,
     ) -> BaseChatModel:
         if model_string is None:
             model_string = self._settings.get_model_string()

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 from neuralscope.core.settings import LLMProvider
 
@@ -13,7 +12,7 @@ class ModelConfig:
     provider: LLMProvider
     model_name: str
     temperature: float = 0.1
-    max_tokens: Optional[int] = None
+    max_tokens: int | None = None
 
     @classmethod
     def from_string(cls, model_string: str, **kwargs: object) -> ModelConfig:

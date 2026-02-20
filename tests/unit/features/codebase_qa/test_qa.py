@@ -3,13 +3,13 @@
 import json
 from pathlib import Path
 
-from neuralscope.features.codebase_qa.domain.entities.answer import Answer, SourceReference
 from neuralscope.features.codebase_qa.data.datasource.file_indexer.implementation import (
     FileIndexer,
 )
 from neuralscope.features.codebase_qa.data.datasource.llm_answerer.implementation import (
     LlmAnswerer,
 )
+from neuralscope.features.codebase_qa.domain.entities.answer import Answer, SourceReference
 
 
 def test_answer_source_count():

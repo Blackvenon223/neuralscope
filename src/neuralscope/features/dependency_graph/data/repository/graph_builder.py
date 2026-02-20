@@ -14,7 +14,7 @@ from langchain_core.language_models import BaseChatModel
 from neuralscope.features.dependency_graph.data.datasource.ast_parser.implementation import (
     AstParser,
 )
-from neuralscope.features.dependency_graph.data.datasource.llm_graph_analyzer.implementation import (
+from neuralscope.features.dependency_graph.data.datasource.llm_graph_analyzer.implementation import (  # noqa: E501
     LlmGraphAnalyzer,
 )
 from neuralscope.features.dependency_graph.domain.entities.graph import DependencyGraph

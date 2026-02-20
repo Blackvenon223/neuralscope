@@ -19,7 +19,8 @@ from neuralscope.features.documentation.domain.entities.document import (
 logger = get_logger("llm_documenter")
 
 SYSTEM_PROMPT = """\
-You are an expert technical writer. Generate comprehensive documentation for the provided Python source code.
+You are an expert technical writer. Generate comprehensive documentation \
+for the provided Python source code.
 
 Return a JSON object:
 {

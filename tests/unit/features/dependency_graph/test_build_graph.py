@@ -69,14 +69,16 @@ def test_llm_graph_analyzer_parse():
     """Test LLM graph analyzer response parsing (no actual LLM call)."""
     import json
 
-    from neuralscope.features.dependency_graph.data.datasource.llm_graph_analyzer.implementation import (
+    from neuralscope.features.dependency_graph.data.datasource.llm_graph_analyzer.implementation import (  # noqa: E501
         LlmGraphAnalyzer,
     )
 
     raw = json.dumps({
         "nodes": [
-            {"id": "app", "name": "app", "kind": "module", "file_path": "app.py", "line": 1},
-            {"id": "app.Server", "name": "Server", "kind": "class", "file_path": "app.py", "line": 5},
+            {"id": "app", "name": "app", "kind": "module",
+             "file_path": "app.py", "line": 1},
+            {"id": "app.Server", "name": "Server", "kind": "class",
+             "file_path": "app.py", "line": 5},
             {"id": "db", "name": "db", "kind": "module", "file_path": "db.py", "line": 1},
         ],
         "edges": [
@@ -94,7 +96,7 @@ def test_llm_graph_analyzer_parse():
 
 
 def test_llm_graph_analyzer_parse_malformed():
-    from neuralscope.features.dependency_graph.data.datasource.llm_graph_analyzer.implementation import (
+    from neuralscope.features.dependency_graph.data.datasource.llm_graph_analyzer.implementation import (  # noqa: E501
         LlmGraphAnalyzer,
     )
 

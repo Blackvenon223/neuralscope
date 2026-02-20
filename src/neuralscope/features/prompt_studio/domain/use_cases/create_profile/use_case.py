@@ -40,7 +40,9 @@ class CreateProfileUseCase:
         self._repo = profile_repo
         self._log_context = log_context_repository
 
-    async def __call__(self, params: CreateProfileParams) -> CreateProfileSuccess | CreateProfileError:
+    async def __call__(
+        self, params: CreateProfileParams,
+    ) -> CreateProfileSuccess | CreateProfileError:
         self._log_context.emit_input(name=params.name)
 
         existing = await self._repo.get(params.name)

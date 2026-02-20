@@ -11,7 +11,6 @@ Usage:
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Optional
 
 from langchain_core.language_models import BaseChatModel
 
@@ -26,15 +25,15 @@ class NeuralScope:
 
     def __init__(
         self,
-        model: Optional[str] = None,
+        model: str | None = None,
         profile: str = "default",
-        settings: Optional[Settings] = None,
+        settings: Settings | None = None,
     ) -> None:
         self._settings = settings or get_settings()
         self._model_string = model or self._settings.get_model_string()
         self._profile = profile
         self._registry = ModelRegistry(self._settings)
-        self._llm: Optional[BaseChatModel] = None
+        self._llm: BaseChatModel | None = None
 
     @property
     def model(self) -> str:
@@ -72,20 +71,31 @@ class NeuralScope:
         if result.is_success():
             r = result.review
             return {
-                "file": r.file_path, "score": r.score, "summary": r.summary,
-                "issues": [{"line": i.line, "message": i.message, "severity": i.severity.value, "category": i.category.value, "suggestion": i.suggestion} for i in r.issues],
+                "file": r.file_path, "score": r.score,
+                "summary": r.summary,
+                "issues": [
+                    {
+                        "line": i.line, "message": i.message,
+                        "severity": i.severity.value,
+                        "category": i.category.value,
+                        "suggestion": i.suggestion,
+                    }
+                    for i in r.issues
+                ],
                 "strengths": r.strengths, "passed": r.passed,
             }
         return {"error": result.message}
 
     # ── Documentation ──────────────────────────────────────────────────────
 
-    async def docs(self, path: str, *, format: str = "markdown") -> dict:
-        from neuralscope.features.documentation.data.datasource.llm_documenter.implementation import (
+    async def docs(self, path: str, *, fmt: str = "markdown") -> dict:
+        from neuralscope.features.documentation.data.datasource.llm_documenter.implementation import (  # noqa: E501
             LlmDocumenterDatasource,
         )
-        from neuralscope.features.documentation.data.repository.documenter import DocumenterRepository
-        from neuralscope.features.documentation.domain.use_cases.generate_file_docs.use_case import (
+        from neuralscope.features.documentation.data.repository.documenter import (
+            DocumenterRepository,
+        )
+        from neuralscope.features.documentation.domain.use_cases.generate_file_docs.use_case import (  # noqa: E501
             GenerateFileDocsParams,
             GenerateFileDocsUseCase,
         )
@@ -93,16 +103,22 @@ class NeuralScope:
         ds = LlmDocumenterDatasource(self._get_llm())
         repo = DocumenterRepository(ds)
         uc = GenerateFileDocsUseCase(documenter_repo=repo, log_context_repository=self._log("docs"))
-        result = await uc(GenerateFileDocsParams(path=path, format=format))
+        result = await uc(GenerateFileDocsParams(path=path, format=fmt))
         if result.is_success():
             d = result.doc
-            return {"file": d.file_path, "module_docstring": d.module_docstring, "items": d.item_count, "rendered": d.rendered}
+            return {
+                "file": d.file_path,
+                "module_docstring": d.module_docstring,
+                "items": d.item_count, "rendered": d.rendered,
+            }
         return {"error": result.message}
 
     # ── Dependency Graph ───────────────────────────────────────────────────
 
     async def build_graph(self, path: str, *, output: str = "svg", mode: str = "ast") -> dict:
-        from neuralscope.features.dependency_graph.data.repository.graph_builder import GraphBuilderRepository
+        from neuralscope.features.dependency_graph.data.repository.graph_builder import (
+            GraphBuilderRepository,
+        )
         from neuralscope.features.dependency_graph.domain.use_cases.build_graph.use_case import (
             BuildGraphParams,
             BuildGraphUseCase,
@@ -113,12 +129,20 @@ class NeuralScope:
         uc = BuildGraphUseCase(graph_builder_repo=repo, log_context_repository=self._log("graph"))
         result = await uc(BuildGraphParams(path=path, output_format=output, mode=mode))
         if result.is_success():
-            return {"nodes": result.graph.node_count, "edges": result.graph.edge_count, "rendered": result.rendered, "mode": mode}
+            return {
+                "nodes": result.graph.node_count,
+                "edges": result.graph.edge_count,
+                "rendered": result.rendered, "mode": mode,
+            }
         return {"error": result.message}
 
     async def impact(self, path: str, *, diff: str = "HEAD~1") -> dict:
-        from neuralscope.features.dependency_graph.data.repository.graph_builder import GraphBuilderRepository
-        from neuralscope.features.dependency_graph.data.repository.impact_analyzer import ImpactAnalyzerRepository
+        from neuralscope.features.dependency_graph.data.repository.graph_builder import (
+            GraphBuilderRepository,
+        )
+        from neuralscope.features.dependency_graph.data.repository.impact_analyzer import (
+            ImpactAnalyzerRepository,
+        )
         from neuralscope.features.dependency_graph.domain.use_cases.analyze_impact.use_case import (
             AnalyzeImpactParams,
             AnalyzeImpactUseCase,
@@ -127,21 +151,29 @@ class NeuralScope:
         builder = GraphBuilderRepository()
         analyzer = ImpactAnalyzerRepository()
         uc = AnalyzeImpactUseCase(
-            graph_builder_repo=builder, impact_repo=analyzer, log_context_repository=self._log("impact")
+            graph_builder_repo=builder,
+            impact_repo=analyzer,
+            log_context_repository=self._log("impact"),
         )
         result = await uc(AnalyzeImpactParams(path=path, changed_files=[diff]))
         if result.is_success():
             r = result.report
-            return {"risk": r.overall_risk.value, "affected": len(r.affected_nodes), "summary": r.summary}
+            return {
+                "risk": r.overall_risk.value,
+                "affected": len(r.affected_nodes),
+                "summary": r.summary,
+            }
         return {"error": result.message}
 
     # ── Vulnerability Scan ─────────────────────────────────────────────────
 
     async def scan(self, path: str) -> dict:
-        from neuralscope.features.vulnerability_scan.data.datasource.llm_scanner.implementation import (
+        from neuralscope.features.vulnerability_scan.data.datasource.llm_scanner.implementation import (  # noqa: E501
             LlmSecurityScanner,
         )
-        from neuralscope.features.vulnerability_scan.data.repository.scanner import ScannerRepository
+        from neuralscope.features.vulnerability_scan.data.repository.scanner import (
+            ScannerRepository,
+        )
         from neuralscope.features.vulnerability_scan.domain.use_cases.scan_project.use_case import (
             ScanProjectParams,
             ScanProjectUseCase,
@@ -154,19 +186,32 @@ class NeuralScope:
         if result.is_success():
             r = result.report
             return {
-                "total": r.total, "critical": r.critical_count, "high": r.high_count,
+                "total": r.total,
+                "critical": r.critical_count,
+                "high": r.high_count,
                 "passed": r.passed, "summary": r.summary,
-                "vulnerabilities": [{"id": v.id, "title": v.title, "severity": v.severity.value, "file": v.file_path, "line": v.line, "description": v.description, "recommendation": v.recommendation} for v in r.vulnerabilities],
+                "vulnerabilities": [
+                    {
+                        "id": v.id, "title": v.title,
+                        "severity": v.severity.value,
+                        "file": v.file_path, "line": v.line,
+                        "description": v.description,
+                        "recommendation": v.recommendation,
+                    }
+                    for v in r.vulnerabilities
+                ],
             }
         return {"error": result.message}
 
     # ── Test Generator ─────────────────────────────────────────────────────
 
     async def generate_tests(self, path: str) -> dict:
-        from neuralscope.features.test_generator.data.datasource.llm_test_writer.implementation import (
+        from neuralscope.features.test_generator.data.datasource.llm_test_writer.implementation import (  # noqa: E501
             LlmTestWriterDatasource,
         )
-        from neuralscope.features.test_generator.data.repository.generator import GeneratorRepository
+        from neuralscope.features.test_generator.data.repository.generator import (
+            GeneratorRepository,
+        )
         from neuralscope.features.test_generator.domain.use_cases.generate_tests.use_case import (
             GenerateTestsParams,
             GenerateTestsUseCase,
@@ -184,8 +229,12 @@ class NeuralScope:
     # ── Codebase Q&A ───────────────────────────────────────────────────────
 
     async def ask(self, question: str, *, project: str = ".") -> dict:
-        from neuralscope.features.codebase_qa.data.datasource.file_indexer.implementation import FileIndexer
-        from neuralscope.features.codebase_qa.data.datasource.llm_answerer.implementation import LlmAnswerer
+        from neuralscope.features.codebase_qa.data.datasource.file_indexer.implementation import (
+            FileIndexer,
+        )
+        from neuralscope.features.codebase_qa.data.datasource.llm_answerer.implementation import (
+            LlmAnswerer,
+        )
         from neuralscope.features.codebase_qa.data.repository.qa import QARepository
         from neuralscope.features.codebase_qa.domain.use_cases.ask_question.use_case import (
             AskQuestionParams,
@@ -201,7 +250,14 @@ class NeuralScope:
             a = result.answer
             return {
                 "answer": a.answer, "confidence": a.confidence,
-                "sources": [{"file": s.file_path, "lines": f"{s.line_start}-{s.line_end}", "snippet": s.snippet} for s in a.sources],
+                "sources": [
+                    {
+                        "file": s.file_path,
+                        "lines": f"{s.line_start}-{s.line_end}",
+                        "snippet": s.snippet,
+                    }
+                    for s in a.sources
+                ],
             }
         return {"error": result.message}
 
@@ -222,7 +278,10 @@ class NeuralScope:
             return {
                 "files": r.total_files, "lines": r.total_lines,
                 "avg_complexity": r.avg_complexity, "health_score": r.health_score,
-                "hotspots": [{"file": h.file_path, "complexity": h.complexity, "rank": h.rank} for h in r.hotspots],
+                "hotspots": [
+                    {"file": h.file_path, "complexity": h.complexity, "rank": h.rank}
+                    for h in r.hotspots
+                ],
             }
         return {"error": result.message}
 
@@ -249,7 +308,7 @@ class NeuralScope:
 
     # ── Architecture Validator ─────────────────────────────────────────────
 
-    async def validate_arch(self, path: str, *, rules: Optional[str] = None) -> dict:
+    async def validate_arch(self, path: str, *, rules: str | None = None) -> dict:
         from neuralscope.features.health_dashboard.data.repository.health import HealthRepository
         from neuralscope.features.health_dashboard.domain.use_cases.analyze_health.use_case import (
             AnalyzeHealthParams,
@@ -261,14 +320,23 @@ class NeuralScope:
         result = await uc(AnalyzeHealthParams(path=path))
         if result.is_success():
             r = result.report
-            hotspot_violations = [{"file": h.file_path, "complexity": h.complexity} for h in r.hotspots if h.complexity > 10]
-            return {"passed": len(hotspot_violations) == 0, "violations": hotspot_violations, "health_score": r.health_score}
+            hotspot_violations = [
+                {"file": h.file_path, "complexity": h.complexity}
+                for h in r.hotspots if h.complexity > 10
+            ]
+            return {
+                "passed": len(hotspot_violations) == 0,
+                "violations": hotspot_violations,
+                "health_score": r.health_score,
+            }
         return {"error": result.message}
 
     # ── Prompt Management ──────────────────────────────────────────────────
 
-    async def create_profile(self, name: str, *, config: Optional[dict] = None) -> dict:
-        from neuralscope.features.prompt_studio.data.datasource.prompt_storage.implementation import (
+    async def create_profile(
+        self, name: str, *, config: dict | None = None,
+    ) -> dict:
+        from neuralscope.features.prompt_studio.data.datasource.prompt_storage.implementation import (  # noqa: E501
             FileProfileRepository,
         )
         from neuralscope.features.prompt_studio.domain.use_cases.create_profile.use_case import (
@@ -294,7 +362,7 @@ class NeuralScope:
         return f"[{profile}] Optimized prompt for: {task}"
 
     async def list_profiles(self) -> list[dict]:
-        from neuralscope.features.prompt_studio.data.datasource.prompt_storage.implementation import (
+        from neuralscope.features.prompt_studio.data.datasource.prompt_storage.implementation import (  # noqa: E501
             FileProfileRepository,
         )
 

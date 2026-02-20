@@ -38,7 +38,9 @@ class GenerateTestsUseCase:
         self._generator = generator_repo
         self._log_context = log_context_repository
 
-    async def __call__(self, params: GenerateTestsParams) -> GenerateTestsSuccess | GenerateTestsError:
+    async def __call__(
+        self, params: GenerateTestsParams,
+    ) -> GenerateTestsSuccess | GenerateTestsError:
         self._log_context.emit_input(path=params.path)
 
         file_path = Path(params.path)

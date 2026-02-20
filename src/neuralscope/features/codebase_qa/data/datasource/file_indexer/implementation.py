@@ -65,7 +65,7 @@ class FileIndexer:
         chunks: list[CodeChunk] = []
 
         for node in ast.walk(tree):
-            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            if isinstance(node, ast.FunctionDef | ast.AsyncFunctionDef | ast.ClassDef):
                 start = node.lineno
                 end = node.end_lineno or start
                 body = "\n".join(lines[start - 1 : end])

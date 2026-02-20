@@ -4,11 +4,11 @@ from pathlib import Path
 
 import pytest
 
-from neuralscope.features.prompt_studio.domain.entities.prompt_profile import PromptProfile
+from neuralscope.core.log_context import LogContextRepository
 from neuralscope.features.prompt_studio.data.datasource.prompt_storage.implementation import (
     FileProfileRepository,
 )
-from neuralscope.core.log_context import LogContextRepository
+from neuralscope.features.prompt_studio.domain.entities.prompt_profile import PromptProfile
 from neuralscope.features.prompt_studio.domain.use_cases.create_profile.use_case import (
     CreateProfileParams,
     CreateProfileUseCase,

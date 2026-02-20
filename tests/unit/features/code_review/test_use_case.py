@@ -1,8 +1,6 @@
 """Tests for review_file use case."""
 
-import json
 from pathlib import Path
-from unittest.mock import AsyncMock
 
 import pytest
 

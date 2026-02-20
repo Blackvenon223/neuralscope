@@ -2,10 +2,10 @@
 
 import json
 
-from neuralscope.features.test_generator.domain.entities.test_suite import TestCase, TestSuite
 from neuralscope.features.test_generator.data.datasource.llm_test_writer.implementation import (
     LlmTestWriterDatasource,
 )
+from neuralscope.features.test_generator.domain.entities.test_suite import TestCase, TestSuite
 
 
 def test_suite_count():

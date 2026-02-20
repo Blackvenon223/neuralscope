@@ -25,7 +25,8 @@ from neuralscope.features.dependency_graph.domain.entities.graph import (
 logger = get_logger("llm_graph_analyzer")
 
 SYSTEM_PROMPT = """\
-You are an expert software architect. Analyze the provided Python project files and extract the dependency graph.
+You are an expert software architect. Analyze the provided Python project files \
+and extract the dependency graph.
 
 Return a JSON object:
 {

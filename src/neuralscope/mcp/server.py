@@ -22,7 +22,10 @@ TOOLS = [
     }),
     Tool(name="docs", description="Generate documentation for a file", inputSchema={
         "type": "object",
-        "properties": {"path": {"type": "string"}, "format": {"type": "string", "default": "markdown"}},
+        "properties": {
+            "path": {"type": "string"},
+            "format": {"type": "string", "default": "markdown"},
+        },
         "required": ["path"],
     }),
     Tool(name="build_graph", description="Build dependency graph", inputSchema={
@@ -47,7 +50,10 @@ TOOLS = [
     }),
     Tool(name="ask", description="Ask a question about the codebase", inputSchema={
         "type": "object",
-        "properties": {"question": {"type": "string"}, "project": {"type": "string", "default": "."}},
+        "properties": {
+            "question": {"type": "string"},
+            "project": {"type": "string", "default": "."},
+        },
         "required": ["question"],
     }),
     Tool(name="health", description="Analyze project health metrics", inputSchema={
@@ -80,8 +86,12 @@ async def call_tool(name: str, arguments: dict[str, Any]) -> list[TextContent]:
     ns = NeuralScope()
     handlers: dict[str, Any] = {
         "review": lambda: ns.review(arguments["path"], diff=arguments.get("diff", False)),
-        "docs": lambda: ns.docs(arguments["path"], format=arguments.get("format", "markdown")),
-        "build_graph": lambda: ns.build_graph(arguments["path"], output=arguments.get("output", "json")),
+        "docs": lambda: ns.docs(
+            arguments["path"], fmt=arguments.get("format", "markdown"),
+        ),
+        "build_graph": lambda: ns.build_graph(
+            arguments["path"], output=arguments.get("output", "json"),
+        ),
         "impact": lambda: ns.impact(arguments["path"], diff=arguments.get("diff", "HEAD~1")),
         "scan": lambda: ns.scan(arguments["path"]),
         "generate_tests": lambda: ns.generate_tests(arguments["path"]),
@@ -114,7 +124,10 @@ async def list_resources() -> list[Resource]:
         Resource(
             uri="neuralscope://health",
             name="Project Health Dashboard",
-            description="Real-time project health metrics including complexity, coverage, and dependency stats",
+            description=(
+                "Real-time project health metrics including"
+                " complexity, coverage, and dependency stats"
+            ),
             mimeType="application/json",
         ),
     ]
@@ -128,7 +141,10 @@ async def read_resource(uri: str) -> str:
             result = await ns.health(".")
             return json.dumps(result, default=str, indent=2)
         except NotImplementedError:
-            return json.dumps({"status": "not_wired", "message": "Health feature not yet connected"})
+            return json.dumps({
+                "status": "not_wired",
+                "message": "Health feature not yet connected",
+            })
     return json.dumps({"error": f"Unknown resource: {uri}"})
 
 

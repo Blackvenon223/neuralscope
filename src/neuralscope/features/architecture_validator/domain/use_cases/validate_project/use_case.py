@@ -7,7 +7,9 @@ from pathlib import Path
 
 from neuralscope.core.log_context import ILogContextRepository
 from neuralscope.features.architecture_validator.domain.entities.validation import ValidationReport
-from neuralscope.features.architecture_validator.domain.repository.validator import IValidatorRepository
+from neuralscope.features.architecture_validator.domain.repository.validator import (
+    IValidatorRepository,
+)
 
 
 @dataclass(frozen=True)
@@ -39,7 +41,9 @@ class ValidateProjectUseCase:
         self._validator = validator_repo
         self._log_context = log_context_repository
 
-    async def __call__(self, params: ValidateProjectParams) -> ValidateProjectSuccess | ValidateProjectError:
+    async def __call__(
+        self, params: ValidateProjectParams,
+    ) -> ValidateProjectSuccess | ValidateProjectError:
         self._log_context.emit_input(path=params.path, rules=params.rules_path)
 
         root = Path(params.path).resolve()

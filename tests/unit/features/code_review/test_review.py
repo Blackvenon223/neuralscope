@@ -2,14 +2,14 @@
 
 import json
 
+from neuralscope.features.code_review.data.datasource.llm_reviewer.implementation import (
+    LlmReviewerDatasource,
+)
 from neuralscope.features.code_review.domain.entities.review import (
     Issue,
     IssueCategory,
     ReviewResult,
     Severity,
-)
-from neuralscope.features.code_review.data.datasource.llm_reviewer.implementation import (
-    LlmReviewerDatasource,
 )
 
 
@@ -19,8 +19,14 @@ def test_review_result_properties():
         score=8.5,
         summary="Clean code",
         issues=[
-            Issue(line=10, message="unused import", severity=Severity.WARNING, category=IssueCategory.STYLE),
-            Issue(line=25, message="SQL injection", severity=Severity.CRITICAL, category=IssueCategory.SECURITY),
+            Issue(
+                line=10, message="unused import",
+                severity=Severity.WARNING, category=IssueCategory.STYLE,
+            ),
+            Issue(
+                line=25, message="SQL injection",
+                severity=Severity.CRITICAL, category=IssueCategory.SECURITY,
+            ),
         ],
         strengths=["Good naming"],
     )

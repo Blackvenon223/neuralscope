@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from neuralscope.features.health_dashboard.data.datasource.complexity_analyzer.implementation import (
+from neuralscope.features.health_dashboard.data.datasource.complexity_analyzer.implementation import (  # noqa: E501
     ComplexityAnalyzer,
 )
 from neuralscope.features.health_dashboard.domain.entities.health import HealthReport

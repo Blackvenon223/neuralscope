@@ -4,15 +4,15 @@ from pathlib import Path
 
 import pytest
 
+from neuralscope.core.log_context import LogContextRepository
+from neuralscope.features.health_dashboard.data.datasource.complexity_analyzer.implementation import (  # noqa: E501
+    ComplexityAnalyzer,
+)
+from neuralscope.features.health_dashboard.data.repository.health import HealthRepository
 from neuralscope.features.health_dashboard.domain.entities.health import (
     ComplexityMetric,
     HealthReport,
 )
-from neuralscope.features.health_dashboard.data.datasource.complexity_analyzer.implementation import (
-    ComplexityAnalyzer,
-)
-from neuralscope.features.health_dashboard.data.repository.health import HealthRepository
-from neuralscope.core.log_context import LogContextRepository
 from neuralscope.features.health_dashboard.domain.use_cases.analyze_health.use_case import (
     AnalyzeHealthParams,
     AnalyzeHealthUseCase,
@@ -29,7 +29,12 @@ def test_health_score_bad():
         project_path="/p",
         avg_complexity=15.0,
         test_coverage=30.0,
-        hotspots=[ComplexityMetric(file_path=f"f{i}.py", function_name="x", complexity=20) for i in range(6)],
+        hotspots=[
+            ComplexityMetric(
+                file_path=f"f{i}.py", function_name="x", complexity=20,
+            )
+            for i in range(6)
+        ],
     )
     assert report.health_score <= 5.0
 

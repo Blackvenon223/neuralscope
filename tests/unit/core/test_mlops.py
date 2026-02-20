@@ -3,7 +3,7 @@
 import time
 
 from neuralscope.core.cache import LLMCache
-from neuralscope.core.tracing import TraceSpan, Tracer
+from neuralscope.core.tracing import Tracer, TraceSpan
 
 
 def test_cache_key_deterministic():

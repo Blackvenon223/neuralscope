@@ -39,7 +39,9 @@ class GenerateSummaryUseCase:
         self._summarizer = summarizer_repo
         self._log_context = log_context_repository
 
-    async def __call__(self, params: GenerateSummaryParams) -> GenerateSummarySuccess | GenerateSummaryError:
+    async def __call__(
+        self, params: GenerateSummaryParams,
+    ) -> GenerateSummarySuccess | GenerateSummaryError:
         self._log_context.emit_input(diff_ref=params.diff_ref)
 
         try:

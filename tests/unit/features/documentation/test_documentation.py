@@ -2,13 +2,13 @@
 
 import json
 
+from neuralscope.features.documentation.data.datasource.llm_documenter.implementation import (
+    LlmDocumenterDatasource,
+)
 from neuralscope.features.documentation.domain.entities.document import (
     ClassDoc,
     FunctionDoc,
     GeneratedDoc,
-)
-from neuralscope.features.documentation.data.datasource.llm_documenter.implementation import (
-    LlmDocumenterDatasource,
 )
 
 
